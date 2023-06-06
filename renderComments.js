@@ -1,6 +1,7 @@
+import { renderLogin } from "./renderLogin.js";
 import { getTime } from "./utils.js";
 
-export const renderComments = (app, isInitialLoading, comments, callback) => {
+export const renderComments = (app, isInitialLoading, comments, user, callback) => {
 
     const commentsHtml = comments
         .map((comment, index) => {
@@ -29,25 +30,9 @@ export const renderComments = (app, isInitialLoading, comments, callback) => {
       <ul id='comments' class="comments">
       ${isInitialLoading ? '<div>Комментарии загружаются</div>' : commentsHtml}
       </ul>
-      <div class="add-form">
-        <input
-          type="text"
-          class="add-form-name"
-          placeholder="Введите ваше имя"
-          value=''
-        />
-        <textarea
-          type="textarea"
-          class="add-form-text"
-          placeholder="Введите ваш коментарий"
-          rows="4"
-          value=''
-        ></textarea>
-        <div class="add-form-row">
-          <button id="add-form-button" class="add-form-button">Написать</button>
-        </div>
-      </div>
-    </div>`;
+      <div class="form-loading" style="margin-top: 20px">
+        Чтобы добавить комментарий, <a href='#' id="go-to-login" href="">авторизуйтесь</a>
+      </div>`;
 
     app.innerHTML = appHtml;
 
@@ -76,6 +61,11 @@ export const renderComments = (app, isInitialLoading, comments, callback) => {
             textInput.value = `QUOTE_BEGIN ${comments[index].author.name}: ${comments[index].text} QUOTE_END`;
         })
     }
+
+    const goToLogin = document.getElementById('go-to-login');
+    goToLogin.addEventListener('click', () => {
+      renderLogin(app, isInitialLoading, comments, user, callback)
+    });
 
     if (callback) callback();
 };
