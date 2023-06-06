@@ -35,7 +35,8 @@ export const renderLogin = (app, isInitialLoading, comments, callback) => {
     const login = document.getElementById('login').value;
     const password = document.getElementById('password').value;
     fetchLogin(login, password).then((response) => {
-        renderComments(app, isInitialLoading, comments, response.user, callback);
+        console.log(response);
+        renderComments(app, isInitialLoading, comments, callback, response.user);
     });
   });
 };

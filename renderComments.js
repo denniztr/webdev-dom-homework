@@ -1,7 +1,8 @@
 import { renderLogin } from "./renderLogin.js";
 import { getTime } from "./utils.js";
+import { postFetch } from "./api.js";
 
-export const renderComments = (app, isInitialLoading, comments, user, callback) => {
+export const renderComments = (app, isInitialLoading, comments, callback, user) => {
 
     const commentsHtml = comments
         .map((comment, index) => {
@@ -30,10 +31,35 @@ export const renderComments = (app, isInitialLoading, comments, user, callback) 
       <ul id='comments' class="comments">
       ${isInitialLoading ? '<div>Комментарии загружаются</div>' : commentsHtml}
       </ul>
-      <div class="form-loading" style="margin-top: 20px">
-        Чтобы добавить комментарий, <a href='#' id="go-to-login" href="">авторизуйтесь</a>
+      ${user ? 
+        `<div class="add-form">
+        <input
+          type="text"
+          class="add-form-name"
+          placeholder="Введите ваше имя"
+          value='${user.name}'
+          disabled
+        />
+        <textarea
+          type="textarea"
+          class="add-form-text"
+          placeholder="Введите ваш коментарий"
+          rows="4"
+          value=''
+          id="text-input"
+        ></textarea>
+        <div class="add-form-row">
+          <button id="add-form-button" class="add-form-button">Написать</button>
+        </div>
+     </div>` 
+     : 
+      `<div class="form-loading" style="margin-top: 20px">
+      Чтобы добавить комментарий, <a href='#' id="go-to-login" href="">авторизуйтесь</a>
+      </div>`
+    }
       </div>`;
 
+      
     app.innerHTML = appHtml;
 
     const likeButtons = document.querySelectorAll('.like-button');
@@ -62,13 +88,16 @@ export const renderComments = (app, isInitialLoading, comments, user, callback) 
         })
     }
 
+  if(!user) {
     const goToLogin = document.getElementById('go-to-login');
     goToLogin.addEventListener('click', () => {
-      renderLogin(app, isInitialLoading, comments, user, callback)
+      renderLogin(app, isInitialLoading, comments, callback, user)
     });
+  }
 
-    if (callback) callback();
+  if (user) {
+    if (callback) callback()
+  }
 };
 
 
-  

@@ -18,17 +18,20 @@ export function fetchLogin(login, password) {
     }),
   }).then((response) => {
     return response.json();
+
   })
 }
 
-export function postFetch(nameInput, textInput) {
+export function postFetch(textInput, token) {
     return fetch(host, {
         method: 'POST',
         body: JSON.stringify({
-          name: replaceValue(nameInput.value),
           text: replaceValue(textInput.value),
-          forceError: true,
+          forceError: false,
         }),
+        header: {
+          Authorization: `Bearer ${token}`,
+        }
       })
       .then((response) => {
         console.log(response);
