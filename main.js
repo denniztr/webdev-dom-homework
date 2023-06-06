@@ -7,7 +7,7 @@ const app = document.getElementById('app');
 let comments = [];
 let isInitialLoading = true;
 
-export function handlePostClick() {
+export function handlePostClick(user) {
     
     const addButton = document.getElementById('add-form-button'); 
     const nameInput = document.querySelector('.add-form-name');
@@ -25,9 +25,9 @@ export function handlePostClick() {
     textInput.classList.remove('error');
 
 
-    postFetch(nameInput, textInput)
+    postFetch(textInput, user.token)
         .then(() => {
-            return startFetch();
+            return startFetch(user);
         })
         .then(() => {
             addButton.disabled = false;
@@ -50,19 +50,21 @@ export function handlePostClick() {
 
         });
 
-    renderComments(app, isInitialLoading, comments, initAddButton);
+    renderComments(app, isInitialLoading, comments, initAddButton, user);
 }
 
-function initAddButton() {
+function initAddButton(user) {
     let addButton = document.getElementById('add-form-button'); 
-    addButton.addEventListener('click', handlePostClick);
+    addButton.addEventListener('click', function() {
+        handlePostClick(user)
+    });
 }
 
-function startFetch() {
+function startFetch(user) {
     getFetch().then((data) => {
         comments = data.comments;
         isInitialLoading = false;
-        renderComments(app, isInitialLoading, comments, initAddButton);
+        renderComments(app, isInitialLoading, comments, initAddButton, user);
     });
 }
 

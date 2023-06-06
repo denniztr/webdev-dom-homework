@@ -29,7 +29,7 @@ export function postFetch(textInput, token) {
           text: replaceValue(textInput.value),
           forceError: false,
         }),
-        header: {
+        headers : {
           Authorization: `Bearer ${token}`,
         }
       })

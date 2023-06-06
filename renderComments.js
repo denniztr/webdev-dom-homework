@@ -73,7 +73,7 @@ export const renderComments = (app, isInitialLoading, comments, callback, user) 
                 : counter += 1;
             comments[index].isLiked = !comments[index].isLiked;
             comments[index].likes = counter;
-            renderComments(app, isInitialLoading, comments)
+            renderComments(app, isInitialLoading, comments, callback, user)
         });
     }
 
@@ -96,7 +96,7 @@ export const renderComments = (app, isInitialLoading, comments, callback, user) 
   }
 
   if (user) {
-    if (callback) callback()
+    if (callback) callback(user)
   }
 };
 
