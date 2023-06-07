@@ -1,6 +1,7 @@
 import { replaceValue } from "./utils.js";
 
-const host = 'https://wedev-api.sky.pro/api/v1/denniztr/comments';
+const host = 'https://wedev-api.sky.pro/api/v2/denniztr/comments';
+const loginHost = 'https://webdev-hw-api.vercel.app/api/user/login';
 
 export function getFetch() {
     return fetch(host, {
@@ -8,14 +9,29 @@ export function getFetch() {
       }).then((res) => res.json());
 };
 
-export function postFetch(nameInput, textInput) {
+export function fetchLogin(login, password) {
+  return fetch(loginHost, {
+    method: 'POST',
+    body: JSON.stringify({
+      login,
+      password,
+    }),
+  }).then((response) => {
+    return response.json();
+
+  })
+}
+
+export function postFetch(textInput, token) {
     return fetch(host, {
         method: 'POST',
         body: JSON.stringify({
-          name: replaceValue(nameInput.value),
           text: replaceValue(textInput.value),
-          forceError: true,
+          forceError: false,
         }),
+        headers : {
+          Authorization: `Bearer ${token}`,
+        }
       })
       .then((response) => {
         console.log(response);
