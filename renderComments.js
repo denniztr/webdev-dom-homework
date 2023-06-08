@@ -1,16 +1,17 @@
 import { renderLogin } from "./renderLogin.js";
 import { getTime } from "./utils.js";
-import { postFetch } from "./api.js";
+import { format } from "date-fns";
 
 export const renderComments = (app, isInitialLoading, comments, callback, user) => {
 
     const commentsHtml = comments
         .map((comment, index) => {
+          const createDate = format(new Date(comment.date), 'yyyy-MM-dd HH.mm.ss');
             return `
         <li data-index='${index}' class="comment">
         <div class="comment-header">
           <div>${comment.author.name}</div>
-          <div>${getTime(comment.date)}</div>
+          <div>${createDate}</div>
         </div>
         <div class="comment-body">
           <div class="comment-text">
